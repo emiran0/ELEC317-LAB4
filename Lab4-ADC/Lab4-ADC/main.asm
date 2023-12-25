@@ -59,8 +59,16 @@ Wait:
 	mov		sevsegDigit, result
 	rcall	seperateDigits
 	rcall	tenDigit
+	rcall	Delay2
 	rcall	digitSelect		;Write result on port C
 	rjmp	Delay			;Repeat conversion
+
+Delay2:	ldi temp3, $00
+	ldi levelCounter, $03
+Wait1:	subi temp3, 1
+	sbci levelCounter, 0
+	brcc Wait
+	ret
 
 seperateDigits:
 	cpi		sevsegDigit, 0x0A

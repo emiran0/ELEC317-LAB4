@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm Mon Dec 25 10:10:54 2023
+AVRASM ver. 2.2.8  c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm Mon Dec 25 11:27:04 2023
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m32def.inc'
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m32def.inc'
@@ -852,16 +852,16 @@ AVRASM ver. 2.2.8  c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\
                                  .org $0000
 000000 940c 0026                 jmp RESET      ;Reset handle
                                  .org OVF0addr
-000016 940c 00a2                 jmp ANA_COMP   ;Timer0 overflow handle
+000016 940c 00a9                 jmp ANA_COMP   ;Timer0 overflow handle
                                  .org ACIaddr
-000024 940c 00a2                 jmp ANA_COMP   ;Analog comparator handle
+000024 940c 00a9                 jmp ANA_COMP   ;Analog comparator handle
                                  
                                  RESET:
 000026 e51f                      	ldi 	TEMP, low(RAMEND)	; initialize stack pointer
 000027 bf1d                      	out		SPL, TEMP
 000028 e018                      	ldi 	TEMP, high(RAMEND)
 000029 bf1e                      	out 	SPH, TEMP
-00002a d068                      	rcall	convert_init		;Initialize A/D converter
+00002a d06f                      	rcall	convert_init		;Initialize A/D converter
 00002b ef0f                      	ldi		result,$ff			;set port D as output
 00002c bb04                      	out		DDRC,result			;for LED’s
 00002d 9478                      	sei							;Enable global interrupt
@@ -873,157 +873,165 @@ AVRASM ver. 2.2.8  c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\
 000031 f7f1                      	brne	loop1			;Check if inner loop is finished
 000032 9553                      	inc 	temp3			;Count up temp counter 2
 000033 f7e1                      	brne 	loop1			;Check if delay is finished
-000034 d065                      	rcall	AD_convert		;Start conversion
+000034 d06c                      	rcall	AD_convert		;Start conversion
                                  
                                  Wait:
 000035 f7fe                      	brtc	Wait			;Wait until conversion is complete (T flag set)
 000036 2f20                      	mov		sevsegDigit, result
-000037 d003                      	rcall	seperateDigits
-000038 d04c                      	rcall	tenDigit
-000039 d009                      	rcall	digitSelect		;Write result on port C
-00003a cff3                      	rjmp	Delay			;Repeat conversion
+000037 d00a                      	rcall	seperateDigits
+000038 d053                      	rcall	tenDigit
+000039 d002                      	rcall	Delay2
+00003a d00f                      	rcall	digitSelect		;Write result on port C
+00003b cff2                      	rjmp	Delay			;Repeat conversion
+                                 
+00003c e050                      Delay2:	ldi temp3, $00
+00003d e033                      	ldi levelCounter, $03
+00003e 5051                      Wait1:	subi temp3, 1
+00003f 4030                      	sbci levelCounter, 0
+000040 f7a0                      	brcc Wait
+000041 9508                      	ret
                                  
                                  seperateDigits:
-00003b 302a                      	cpi		sevsegDigit, 0x0A
-00003c f408                      	brsh	countTens
-00003d 9508                      	ret
+000042 302a                      	cpi		sevsegDigit, 0x0A
+000043 f408                      	brsh	countTens
+000044 9508                      	ret
                                  
                                  countTens:
-00003e 502a                      	subi	sevsegDigit, 0x0A
-00003f 9533                      	inc		levelCounter
-000040 302a                      	cpi		sevsegDigit, 0x0A
-000041 f7c8                      	brsh	seperateDigits
-000042 9508                      	ret	 
+000045 502a                      	subi	sevsegDigit, 0x0A
+000046 9533                      	inc		levelCounter
+000047 302a                      	cpi		sevsegDigit, 0x0A
+000048 f7c8                      	brsh	seperateDigits
+000049 9508                      	ret	 
                                  
                                  digitSelect:
-000043 e011                      	ldi		temp, (1<<0)
-000044 bb1b                      	out		PORTA, temp
-000045 3029                      	cpi		sevsegDigit, 0x09
-000046 f099                      	breq	go_nine
-000047 3028                      	cpi		sevsegDigit, 0x08
-000048 f0a9                      	breq	go_eight
-000049 3027                      	cpi		sevsegDigit, 0x07
-00004a f0b9                      	breq	go_seven
-00004b 3026                      	cpi		sevsegDigit, 0x06
-00004c f0c9                      	breq	go_six
-00004d 3025                      	cpi		sevsegDigit, 0x05
-00004e f0d9                      	breq	go_five
-00004f 3024                      	cpi		sevsegDigit, 0x04
-000050 f0e9                      	breq	go_four
-000051 3023                      	cpi		sevsegDigit, 0x03
-000052 f0f9                      	breq	go_three
-000053 3022                      	cpi		sevsegDigit, 0x02
-000054 f109                      	breq	go_two
-000055 3021                      	cpi		sevsegDigit, 0x01
-000056 f119                      	breq	go_one
-000057 3020                      	cpi		sevsegDigit, 0x00
-000058 f129                      	breq	go_zero
-000059 9508                      	ret
+00004a e011                      	ldi		temp, (1<<0)
+00004b bb1b                      	out		PORTA, temp
+00004c 3029                      	cpi		sevsegDigit, 0x09
+00004d f099                      	breq	go_nine
+00004e 3028                      	cpi		sevsegDigit, 0x08
+00004f f0a9                      	breq	go_eight
+000050 3027                      	cpi		sevsegDigit, 0x07
+000051 f0b9                      	breq	go_seven
+000052 3026                      	cpi		sevsegDigit, 0x06
+000053 f0c9                      	breq	go_six
+000054 3025                      	cpi		sevsegDigit, 0x05
+000055 f0d9                      	breq	go_five
+000056 3024                      	cpi		sevsegDigit, 0x04
+000057 f0e9                      	breq	go_four
+000058 3023                      	cpi		sevsegDigit, 0x03
+000059 f0f9                      	breq	go_three
+00005a 3022                      	cpi		sevsegDigit, 0x02
+00005b f109                      	breq	go_two
+00005c 3021                      	cpi		sevsegDigit, 0x01
+00005d f119                      	breq	go_one
+00005e 3020                      	cpi		sevsegDigit, 0x00
+00005f f129                      	breq	go_zero
+000060 9508                      	ret
                                  
                                  go_nine:
-00005a 2733                      	clr		levelCounter
-00005b e65f                      	ldi		temp3, num9
-00005c bb55                      	out		PORTC, temp3
-00005d 9508                      	ret
+000061 2733                      	clr		levelCounter
+000062 e65f                      	ldi		temp3, num9
+000063 bb55                      	out		PORTC, temp3
+000064 9508                      	ret
                                  go_eight:
-00005e 2733                      	clr		levelCounter
-00005f e75f                      	ldi		temp3, num8
-000060 bb55                      	out		PORTC, temp3
-000061 9508                      	ret
+000065 2733                      	clr		levelCounter
+000066 e75f                      	ldi		temp3, num8
+000067 bb55                      	out		PORTC, temp3
+000068 9508                      	ret
                                  go_seven:
-000062 2733                      	clr		levelCounter
-000063 e057                      	ldi		temp3, num7
-000064 bb55                      	out		PORTC, temp3
-000065 9508                      	ret
+000069 2733                      	clr		levelCounter
+00006a e057                      	ldi		temp3, num7
+00006b bb55                      	out		PORTC, temp3
+00006c 9508                      	ret
                                  go_six:
-000066 2733                      	clr		levelCounter
-000067 e75d                      	ldi		temp3, num6
-000068 bb55                      	out		PORTC, temp3
-000069 9508                      	ret
+00006d 2733                      	clr		levelCounter
+00006e e75d                      	ldi		temp3, num6
+00006f bb55                      	out		PORTC, temp3
+000070 9508                      	ret
                                  go_five:
-00006a 2733                      	clr		levelCounter
-00006b e65d                      	ldi		temp3, num5
-00006c bb55                      	out		PORTC, temp3
-00006d 9508                      	ret
+000071 2733                      	clr		levelCounter
+000072 e65d                      	ldi		temp3, num5
+000073 bb55                      	out		PORTC, temp3
+000074 9508                      	ret
                                  go_four:
-00006e 2733                      	clr		levelCounter
-00006f e656                      	ldi		temp3, num4
-000070 bb55                      	out		PORTC, temp3
-000071 9508                      	ret
+000075 2733                      	clr		levelCounter
+000076 e656                      	ldi		temp3, num4
+000077 bb55                      	out		PORTC, temp3
+000078 9508                      	ret
                                  go_three:
-000072 2733                      	clr		levelCounter
-000073 e45f                      	ldi		temp3, num3
-000074 bb55                      	out		PORTC, temp3
-000075 9508                      	ret
+000079 2733                      	clr		levelCounter
+00007a e45f                      	ldi		temp3, num3
+00007b bb55                      	out		PORTC, temp3
+00007c 9508                      	ret
                                  go_two:
-000076 2733                      	clr		levelCounter
-000077 e55b                      	ldi		temp3, num2
-000078 bb55                      	out		PORTC, temp3
-000079 9508                      	ret
+00007d 2733                      	clr		levelCounter
+00007e e55b                      	ldi		temp3, num2
+00007f bb55                      	out		PORTC, temp3
+000080 9508                      	ret
                                  go_one:
-00007a 2733                      	clr		levelCounter
-00007b e056                      	ldi		temp3, num1
-00007c bb55                      	out		PORTC, temp3
-00007d 9508                      	ret
-                                 go_zero:
-00007e 2733                      	clr		levelCounter
-00007f e35f                      	ldi		temp3, num0
-000080 bb55                      	out		PORTC, temp3
-000081 9508                      	ret
-                                 goALL:
-000082 e850                      	ldi		temp3, 0x80
+000081 2733                      	clr		levelCounter
+000082 e056                      	ldi		temp3, num1
 000083 bb55                      	out		PORTC, temp3
 000084 9508                      	ret
+                                 go_zero:
+000085 2733                      	clr		levelCounter
+000086 e35f                      	ldi		temp3, num0
+000087 bb55                      	out		PORTC, temp3
+000088 9508                      	ret
+                                 goALL:
+000089 e850                      	ldi		temp3, 0x80
+00008a bb55                      	out		PORTC, temp3
+00008b 9508                      	ret
                                  
                                  tenDigit:
-000085 e012                      	ldi		temp, (1<<1)
-000086 bb1b                      	out		PORTA, temp
-000087 3030                      	cpi		levelCounter, 0x00
-000088 f3a9                      	breq	go_zero
-000089 3031                      	cpi		levelCounter, 0x01
-00008a f379                      	breq	go_one
-00008b 3032                      	cpi		levelCounter, 0x02
-00008c f349                      	breq	go_two
-00008d 3033                      	cpi		levelCounter, 0x03
-00008e f319                      	breq	go_three
-00008f 3034                      	cpi		levelCounter, 0x04
-000090 f2e9                      	breq	go_four
-000091 3035                      	cpi		levelCounter, 0x05
-000092 f2b9                      	breq	go_five
+00008c e012                      	ldi		temp, (1<<1)
+00008d bb1b                      	out		PORTA, temp
+00008e 3030                      	cpi		levelCounter, 0x00
+00008f f3a9                      	breq	go_zero
+000090 3031                      	cpi		levelCounter, 0x01
+000091 f379                      	breq	go_one
+000092 3032                      	cpi		levelCounter, 0x02
+000093 f349                      	breq	go_two
+000094 3033                      	cpi		levelCounter, 0x03
+000095 f319                      	breq	go_three
+000096 3034                      	cpi		levelCounter, 0x04
+000097 f2e9                      	breq	go_four
+000098 3035                      	cpi		levelCounter, 0x05
+000099 f2b9                      	breq	go_five
                                  
                                  convert_init:
-000093 e00b                      	ldi     result,(1<<ACIE)|(1<<ACIS1)|(1<<ACIS0)  ;Initiate comparator
-000094 b908                      	out     ACSR,result 				; enable comparator interrupt
-000095 e001                      	ldi     result,(1<<TOIE0)      			;Enable timer interrupt
-000096 bf09                      	out     TIMSK,result
-000097 9ab9                      	sbi     DDRB,PB1       			;Set converter charge/discharge pin
-000098 98bb                      	cbi     DDRB,PB3				;AIN1	;Voltage input to the comparator
-000099 9508                      	ret								;Return from subroutine
+00009a e00b                      	ldi     result,(1<<ACIE)|(1<<ACIS1)|(1<<ACIS0)  ;Initiate comparator
+00009b b908                      	out     ACSR,result 				; enable comparator interrupt
+00009c e001                      	ldi     result,(1<<TOIE0)      			;Enable timer interrupt
+00009d bf09                      	out     TIMSK,result
+00009e 9ab9                      	sbi     DDRB,PB1       			;Set converter charge/discharge pin
+00009f 98bb                      	cbi     DDRB,PB3				;AIN1	;Voltage input to the comparator
+0000a0 9508                      	ret								;Return from subroutine
                                  
                                  AD_convert:
-00009a ec00                      	ldi		result,preset		  	;Load offset value (192)
-00009b bf02                      	out		TCNT0,result    		;to the counter
-00009c 94e8                      	clt								;Clear conversion complete flag (t)
-00009d 98ba                      	cbi		DDRB, PB2				;AIN0	;Disconnect discharging, input to comp.
-00009e e002                      	ldi		result,(1<<CS01)		;Start timer0 with prescaling f/8
-00009f bf03                      	out		TCCR0,result
+0000a1 ec00                      	ldi		result,preset		  	;Load offset value (192)
+0000a2 bf02                      	out		TCNT0,result    		;to the counter
+0000a3 94e8                      	clt								;Clear conversion complete flag (t)
+0000a4 98ba                      	cbi		DDRB, PB2				;AIN0	;Disconnect discharging, input to comp.
+0000a5 e002                      	ldi		result,(1<<CS01)		;Start timer0 with prescaling f/8
+0000a6 bf03                      	out		TCCR0,result
                                  
-0000a0 9ac1                      	sbi		PORTB,PB1				;Start charging of capacitor
-0000a1 9508                      	ret								;Return from subroutine
+0000a7 9ac1                      	sbi		PORTB,PB1				;Start charging of capacitor
+0000a8 9508                      	ret								;Return from subroutine
                                  
                                  ;Interrupt handler for A/D Comparator and overflow
                                  ANA_COMP:       	
-0000a2 b702                      	in		result,TCNT0    	; Get timer value
-0000a3 2711                      	clr		temp    			; Stop timer0
-0000a4 bf13                      	out		TCCR0,temp         
-0000a5 5c01                      	subi	result,preset+1 	; Rescale A/D output 
+0000a9 b702                      	in		result,TCNT0    	; Get timer value
+0000aa 2711                      	clr		temp    			; Stop timer0
+0000ab bf13                      	out		TCCR0,temp         
+0000ac 5c01                      	subi	result,preset+1 	; Rescale A/D output 
                                  								;(+1 for int. delay)
                                  
-0000a6 98c1                      	cbi		PORTB,PB1       	;Start discharge
-0000a7 9aba                      	sbi		DDRB, PB2			;AIN0	;Make discharging pin an output
+0000ad 98c1                      	cbi		PORTB,PB1       	;Start discharge
+0000ae 9aba                      	sbi		DDRB, PB2			;AIN0	;Make discharging pin an output
                                  								;it automatically becomes low
-0000a8 9468                      	set							;Set conversion complete flag (T flag)
-0000a9 9518                      	reti             			;Return from interrupt
+0000af 9468                      	set							;Set conversion complete flag (T flag)
+0000b0 9518                      	reti             			;Return from interrupt
                                  
                                  
 
@@ -1045,15 +1053,15 @@ counted separately from r26..r31 here.
 "ATmega32" register use summary:
 x  :   0 y  :   0 z  :   0 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16:  13 r17:  10 r18:  14 r19:  17 r20:   2 
-r21:  24 r22:   0 r23:   0 r24:   0 r25:   0 r26:   0 r27:   0 r28:   0 
+r13:   0 r14:   0 r15:   0 r16:  13 r17:  10 r18:  14 r19:  19 r20:   2 
+r21:  26 r22:   0 r23:   0 r24:   0 r25:   0 r26:   0 r27:   0 r28:   0 
 r29:   0 r30:   0 r31:   0 
 Registers used: 6 out of 35 (17.1%)
 
 "ATmega32" instruction use summary:
 .lds  :   0 .sts  :   0 adc   :   0 add   :   0 adiw  :   0 and   :   0 
 andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
-brcc  :   0 brcs  :   0 break :   0 breq  :  16 brge  :   0 brhc  :   0 
+brcc  :   1 brcs  :   0 break :   0 breq  :  16 brge  :   0 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   0 brlt  :   0 brmi  :   0 
 brne  :   2 brpl  :   0 brsh  :   2 brtc  :   1 brts  :   0 brvc  :   0 
 brvs  :   0 bset  :   0 bst   :   0 call  :   0 cbi   :   3 cbr   :   0 
@@ -1061,21 +1069,21 @@ clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :  12 cls   :   0
 clt   :   1 clv   :   0 clz   :   0 com   :   0 cp    :   0 cpc   :   0 
 cpi   :  18 cpse  :   0 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0 
 fmulsu:   0 icall :   0 ijmp  :   0 in    :   1 inc   :   3 jmp   :   3 
-ld    :   0 ldd   :   0 ldi   :  21 lds   :   0 lpm   :   0 lsl   :   0 
+ld    :   0 ldd   :   0 ldi   :  23 lds   :   0 lpm   :   0 lsl   :   0 
 lsr   :   0 mov   :   1 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
 neg   :   0 nop   :   0 or    :   0 ori   :   0 out   :  21 pop   :   0 
-push  :   0 rcall :   5 ret   :  16 reti  :   1 rjmp  :   1 rol   :   0 
-ror   :   0 sbc   :   0 sbci  :   0 sbi   :   3 sbic  :   0 sbis  :   0 
+push  :   0 rcall :   6 ret   :  17 reti  :   1 rjmp  :   1 rol   :   0 
+ror   :   0 sbc   :   0 sbci  :   1 sbi   :   3 sbic  :   0 sbis  :   0 
 sbiw  :   0 sbr   :   0 sbrc  :   0 sbrs  :   0 sec   :   0 seh   :   0 
 sei   :   1 sen   :   0 ser   :   0 ses   :   0 set   :   1 sev   :   0 
 sez   :   0 sleep :   0 spm   :   0 st    :   0 std   :   0 sts   :   0 
-sub   :   0 subi  :   2 swap  :   0 tst   :   0 wdr   :   0 
-Instructions used: 22 out of 113 (19.5%)
+sub   :   0 subi  :   3 swap  :   0 tst   :   0 wdr   :   0 
+Instructions used: 24 out of 113 (21.2%)
 
 "ATmega32" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x000154    276      0    276   32768   0.8%
+[.cseg] 0x000000 0x000162    290      0    290   32768   0.9%
 [.dseg] 0x000060 0x000060      0      0      0    2048   0.0%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 
