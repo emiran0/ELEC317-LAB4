@@ -5,7 +5,7 @@
  */ 
 
 ;***** Constants
-.equ	preset=192			;T/C0 Preset constant (256-64)
+.equ	preset=193			;T/C0 Preset constant (256-64)
 .equ num9= 0x6F
 .equ num8= 0x7F
 .equ num7= 0x07
@@ -179,6 +179,8 @@ tenDigit:
 	breq	go_four
 	cpi		levelCounter, 0x05
 	breq	go_five
+	cpi		levelCounter, 0x06
+	breq	go_six
 	ret
 
 convert_init:
@@ -188,7 +190,8 @@ convert_init:
 	out     TIMSK,result
 	sbi     DDRB,PB1       			;Set converter charge/discharge pin
 	cbi     DDRB,PB3				;AIN1	;Voltage input to the comparator
-	ret								;Return from subroutine
+	ret							
+		;Return from subroutine
 
 AD_convert:
 	ldi		result,preset		  	;Load offset value (192)
