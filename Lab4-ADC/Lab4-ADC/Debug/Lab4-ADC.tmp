@@ -23,28 +23,28 @@
  </OUTPUT_FILES>
  <LABELS>
   <RESET><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>38</LINE></RESET>
-  <ANA_COMP><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>202</LINE></ANA_COMP>
-  <convert_init><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>181</LINE></convert_init>
+  <ANA_COMP><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>203</LINE></ANA_COMP>
+  <convert_init><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>182</LINE></convert_init>
   <Delay><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>47</LINE></Delay>
   <loop1><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>50</LINE></loop1>
-  <AD_convert><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>190</LINE></AD_convert>
+  <AD_convert><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>191</LINE></AD_convert>
   <Wait><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>57</LINE></Wait>
-  <seperateDigits><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>73</LINE></seperateDigits>
-  <tenDigit><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>165</LINE></tenDigit>
-  <Delay2><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>66</LINE></Delay2>
-  <digitSelect><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>85</LINE></digitSelect>
-  <Wait1><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>68</LINE></Wait1>
-  <countTens><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>78</LINE></countTens>
-  <go_nine><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>110</LINE></go_nine>
-  <go_eight><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>115</LINE></go_eight>
-  <go_seven><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>120</LINE></go_seven>
-  <go_six><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>125</LINE></go_six>
-  <go_five><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>130</LINE></go_five>
-  <go_four><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>135</LINE></go_four>
-  <go_three><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>140</LINE></go_three>
-  <go_two><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>145</LINE></go_two>
-  <go_one><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>150</LINE></go_one>
-  <go_zero><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>155</LINE></go_zero>
-  <goALL><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>160</LINE></goALL>
+  <seperateDigits><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>74</LINE></seperateDigits>
+  <tenDigit><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>166</LINE></tenDigit>
+  <Delay2><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>67</LINE></Delay2>
+  <digitSelect><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>86</LINE></digitSelect>
+  <Wait1><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>69</LINE></Wait1>
+  <countTens><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>79</LINE></countTens>
+  <go_nine><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>111</LINE></go_nine>
+  <go_eight><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>116</LINE></go_eight>
+  <go_seven><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>121</LINE></go_seven>
+  <go_six><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>126</LINE></go_six>
+  <go_five><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>131</LINE></go_five>
+  <go_four><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>136</LINE></go_four>
+  <go_three><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>141</LINE></go_three>
+  <go_two><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>146</LINE></go_two>
+  <go_one><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>151</LINE></go_one>
+  <go_zero><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>156</LINE></go_zero>
+  <goALL><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>161</LINE></goALL>
  </LABELS>
 </ASSEMBLER_INFO>

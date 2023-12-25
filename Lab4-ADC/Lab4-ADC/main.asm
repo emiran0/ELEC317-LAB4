@@ -61,6 +61,7 @@ Wait:
 	rcall	tenDigit
 	rcall	Delay2
 	rcall	digitSelect		;Write result on port C
+	rcall	Delay2
 	rjmp	Delay			;Repeat conversion
 
 Delay2:	ldi temp3, $00

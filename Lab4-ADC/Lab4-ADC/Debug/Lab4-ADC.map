@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm Mon Dec 25 11:27:04 2023
+AVRASM ver. 2.2.8  c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm Mon Dec 25 11:47:47 2023
 
 
 EQU  SIGNATURE_000 0000001e
@@ -586,26 +586,26 @@ DEF  levelCounter r19
 DEF  temp2        r20
 DEF  temp3        r21
 CSEG RESET        00000026
-CSEG ANA_COMP     000000a9
-CSEG convert_init 0000009a
+CSEG ANA_COMP     000000aa
+CSEG convert_init 0000009b
 CSEG Delay        0000002e
 CSEG loop1        00000030
-CSEG AD_convert   000000a1
+CSEG AD_convert   000000a2
 CSEG Wait         00000035
-CSEG seperateDigits 00000042
-CSEG tenDigit     0000008c
-CSEG Delay2       0000003c
-CSEG digitSelect  0000004a
-CSEG Wait1        0000003e
-CSEG countTens    00000045
-CSEG go_nine      00000061
-CSEG go_eight     00000065
-CSEG go_seven     00000069
-CSEG go_six       0000006d
-CSEG go_five      00000071
-CSEG go_four      00000075
-CSEG go_three     00000079
-CSEG go_two       0000007d
-CSEG go_one       00000081
-CSEG go_zero      00000085
-CSEG goALL        00000089
+CSEG seperateDigits 00000043
+CSEG tenDigit     0000008d
+CSEG Delay2       0000003d
+CSEG digitSelect  0000004b
+CSEG Wait1        0000003f
+CSEG countTens    00000046
+CSEG go_nine      00000062
+CSEG go_eight     00000066
+CSEG go_seven     0000006a
+CSEG go_six       0000006e
+CSEG go_five      00000072
+CSEG go_four      00000076
+CSEG go_three     0000007a
+CSEG go_two       0000007e
+CSEG go_one       00000082
+CSEG go_zero      00000086
+CSEG goALL        0000008a
