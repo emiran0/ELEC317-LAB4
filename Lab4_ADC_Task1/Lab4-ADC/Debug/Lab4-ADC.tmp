@@ -1,0 +1,49 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.8</VERSION>
+ <DEVICE>"ATmega32"</DEVICE>
+ <WORKING_DIR>C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task1\Lab4-ADC\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task1\Lab4-ADC\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m32def.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task1\Lab4-ADC\Debug\Lab4-ADC.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>Lab4-ADC.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>Lab4-ADC.map</FILE>
+  <FILE>Lab4-ADC.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <RESET><FILE>C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task1\Lab4-ADC\main.asm</FILE><LINE>47</LINE></RESET>
+  <ANA_COMP><FILE>C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task1\Lab4-ADC\main.asm</FILE><LINE>211</LINE></ANA_COMP>
+  <convert_init><FILE>C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task1\Lab4-ADC\main.asm</FILE><LINE>190</LINE></convert_init>
+  <Delay><FILE>C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task1\Lab4-ADC\main.asm</FILE><LINE>56</LINE></Delay>
+  <loop1><FILE>C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task1\Lab4-ADC\main.asm</FILE><LINE>59</LINE></loop1>
+  <AD_convert><FILE>C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task1\Lab4-ADC\main.asm</FILE><LINE>199</LINE></AD_convert>
+  <Wait><FILE>C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task1\Lab4-ADC\main.asm</FILE><LINE>66</LINE></Wait>
+  <seperateDigits><FILE>C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task1\Lab4-ADC\main.asm</FILE><LINE>83</LINE></seperateDigits>
+  <tenDigit><FILE>C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task1\Lab4-ADC\main.asm</FILE><LINE>171</LINE></tenDigit>
+  <Delay2><FILE>C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task1\Lab4-ADC\main.asm</FILE><LINE>76</LINE></Delay2>
+  <digitSelect><FILE>C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task1\Lab4-ADC\main.asm</FILE><LINE>95</LINE></digitSelect>
+  <Wait1><FILE>C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task1\Lab4-ADC\main.asm</FILE><LINE>78</LINE></Wait1>
+  <countTens><FILE>C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task1\Lab4-ADC\main.asm</FILE><LINE>88</LINE></countTens>
+  <go_nine><FILE>C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task1\Lab4-ADC\main.asm</FILE><LINE>120</LINE></go_nine>
+  <go_eight><FILE>C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task1\Lab4-ADC\main.asm</FILE><LINE>125</LINE></go_eight>
+  <go_seven><FILE>C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task1\Lab4-ADC\main.asm</FILE><LINE>130</LINE></go_seven>
+  <go_six><FILE>C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task1\Lab4-ADC\main.asm</FILE><LINE>135</LINE></go_six>
+  <go_five><FILE>C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task1\Lab4-ADC\main.asm</FILE><LINE>140</LINE></go_five>
+  <go_four><FILE>C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task1\Lab4-ADC\main.asm</FILE><LINE>145</LINE></go_four>
+  <go_three><FILE>C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task1\Lab4-ADC\main.asm</FILE><LINE>150</LINE></go_three>
+  <go_two><FILE>C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task1\Lab4-ADC\main.asm</FILE><LINE>155</LINE></go_two>
+  <go_one><FILE>C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task1\Lab4-ADC\main.asm</FILE><LINE>160</LINE></go_one>
+  <go_zero><FILE>C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task1\Lab4-ADC\main.asm</FILE><LINE>165</LINE></go_zero>
+ </LABELS>
+</ASSEMBLER_INFO>

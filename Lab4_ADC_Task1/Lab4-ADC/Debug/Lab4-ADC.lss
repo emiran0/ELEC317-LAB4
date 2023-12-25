@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm Mon Dec 25 20:24:32 2023
+AVRASM ver. 2.2.8  C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task1\Lab4-ADC\main.asm Mon Dec 25 20:41:32 2023
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m32def.inc'
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m32def.inc'
@@ -821,16 +821,20 @@ AVRASM ver. 2.2.8  C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_
                                  
                                  
                                   * Lab4_ADC.asm
-                                  *	;;;;TASK 2;;;;;;
-                                  *	CLK ==> 4MHz, to stop sudden jumps.
-                                  *	476 Byte
-                                  *  8 registers
-                                  *	each index of the data table is for the time index from T0
-                                  *	which equals to the result (potentiometer).
+                                  *
+                                  ******  TASK 1 ********	
+                                  *
+                                  *	298 Byte
+                                  *	7 Register used.
+                                  *	CLK ==> 4MHz. To stop sudden jumps in seven segment display.
+                                  *	There are minor changes like new Delay subroutine and driving
+                                  *	the seven segment display. Other than that the code is almost the same as
+                                  *	the given sample code.
+                                  *  
                                   */ 
                                  
                                  ;***** Constants
-                                 .equ	preset=130			;T/C0 Preset constant (256-64)
+                                 .equ	preset=193			;T/C0 Preset constant (256-64)
                                  .equ num9= 0x6F
                                  .equ num8= 0x7F
                                  .equ num7= 0x07
@@ -849,7 +853,6 @@ AVRASM ver. 2.2.8  C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_
                                  .def	temp2=r20
                                  .def	temp3=r21
                                  .def	temp4 = r22
-                                 .def	hunderedNum = r23
                                  
                                  ;***********************************************************;
                                  ;*  	PROGRAM START - EXECUTION STARTS HERE			   *;	
@@ -858,18 +861,18 @@ AVRASM ver. 2.2.8  C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_
                                  .org $0000
 000000 940c 0026                 jmp RESET      ;Reset handle
                                  .org OVF0addr
-000016 940c 00c5                 jmp ANA_COMP   ;Timer0 overflow handle
+000016 940c 00aa                 jmp ANA_COMP   ;Timer0 overflow handle
                                  .org ACIaddr
-000024 940c 00c5                 jmp ANA_COMP   ;Analog comparator handle
+000024 940c 00aa                 jmp ANA_COMP   ;Analog comparator handle
                                  
                                  RESET:
 000026 e51f                      	ldi 	TEMP, low(RAMEND)	; initialize stack pointer
 000027 bf1d                      	out		SPL, TEMP
 000028 e018                      	ldi 	TEMP, high(RAMEND)
 000029 bf1e                      	out 	SPH, TEMP
-00002a d08b                      	rcall	convert_init		;Initialize A/D converter
+00002a d070                      	rcall	convert_init		;Initialize A/D converter
 00002b ef0f                      	ldi		result,$ff			;set port D as output
-00002c bb04                      	out		DDRC,result			;for LED?s
+00002c bb04                      	out		DDRC,result			;for LED’s
 00002d 9478                      	sei							;Enable global interrupt
                                  Delay:	
 00002e 2744                      	clr		temp2			;Clear temp counter 1
@@ -879,271 +882,164 @@ AVRASM ver. 2.2.8  C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_
 000031 f7f1                      	brne	loop1			;Check if inner loop is finished
 000032 9553                      	inc 	temp3			;Count up temp counter 2
 000033 f7e1                      	brne 	loop1			;Check if delay is finished
-000034 d088                      	rcall	AD_convert		;Start conversion
+000034 d06d                      	rcall	AD_convert		;Start conversion
                                  
                                  Wait:
 000035 f7fe                      	brtc	Wait			;Wait until conversion is complete (T flag set)
 000036 2f20                      	mov		sevsegDigit, result
-000037 d00a                      	rcall	getExp
-000038 d01b                      	rcall	seperateDigits
-000039 d075                      	rcall	hunderedDigit
-00003a d013                      	rcall	Delay2
-00003b d05c                      	rcall	tenDigit
-00003c d011                      	rcall	Delay2
-00003d d025                      	rcall	digitSelect		;Write result on port C
-00003e d00f                      	rcall	Delay2
-00003f 2733                      	clr		levelCounter
-000040 2777                      	clr		hunderedNum
-000041 cfec                      	rjmp	Delay			;Repeat conversion
+000037 d00b                      	rcall	seperateDigits
+000038 d051                      	rcall	tenDigit
+000039 d003                      	rcall	Delay2
+00003a d010                      	rcall	digitSelect		;Write result on port C
+00003b d001                      	rcall	Delay2
+00003c cff1                      	rjmp	Delay			;Repeat conversion
                                  
-                                 getExp:
-000042 93af                      	push	XL
-000043 93bf                      	push	XH
-000044 930f                      	push	result
-                                 
-000045 e9ea                      	ldi		ZL, low(expLookup * 2)
-000046 e0f1                      	ldi		ZH, high(expLookup * 2)
-000047 0fe2                      	add		ZL, sevsegDigit
-000048 2700                      	clr		result
-000049 1ff0                      	adc		ZH, result
-00004a 9124                      	lpm		sevsegDigit, Z
-                                 
-00004b 910f                      	pop		result
-00004c 91bf                      	pop		XH
-00004d 91af                      	pop		XL
-                                 
-00004e e050                      Delay2:	ldi temp3, $00
-00004f e063                      	ldi temp4, $03
-000050 5051                      Wait1:	subi temp3, 1
-000051 4060                      	sbci temp4, 0
-000052 f7e8                      	brcc Wait1
-000053 9508                      	ret
+00003d e050                      Delay2:	ldi temp3, $00
+00003e e063                      	ldi temp4, $03
+00003f 5051                      Wait1:	subi temp3, 1
+000040 4060                      	sbci temp4, 0
+000041 f7e8                      	brcc Wait1
+000042 9508                      	ret
                                  
                                  seperateDigits:
-000054 3624                      	cpi		sevsegDigit, 0x64
-000055 f418                      	brsh	countHundereds
-000056 302a                      	cpi		sevsegDigit, 0x0A
-000057 f430                      	brsh	countTens
-000058 9508                      	ret
-                                 
-                                 countHundereds:
-000059 5624                      	subi	sevsegDigit, 0x64
-00005a 9573                      	inc		hunderedNum
-00005b 3624                      	cpi		sevsegDigit, 0x64
-00005c f3b8                      	brlo	seperateDigits
-00005d 9508                      	ret
+000043 302a                      	cpi		sevsegDigit, 0x0A
+000044 f408                      	brsh	countTens
+000045 9508                      	ret
                                  
                                  countTens:
-00005e 502a                      	subi	sevsegDigit, 0x0A
-00005f 9533                      	inc		levelCounter
-000060 302a                      	cpi		sevsegDigit, 0x0A
-000061 f790                      	brsh	seperateDigits
-000062 9508                      	ret	 
+000046 502a                      	subi	sevsegDigit, 0x0A
+000047 9533                      	inc		levelCounter
+000048 302a                      	cpi		sevsegDigit, 0x0A
+000049 f7c8                      	brsh	seperateDigits
+00004a 9508                      	ret	 
                                  
                                  digitSelect:
-000063 e011                      	ldi		temp, (1<<0)
-000064 bb1b                      	out		PORTA, temp
-000065 3029                      	cpi		sevsegDigit, 0x09
-000066 f099                      	breq	go_nine
-000067 3028                      	cpi		sevsegDigit, 0x08
-000068 f0a1                      	breq	go_eight
-000069 3027                      	cpi		sevsegDigit, 0x07
-00006a f0a9                      	breq	go_seven
-00006b 3026                      	cpi		sevsegDigit, 0x06
-00006c f0b1                      	breq	go_six
-00006d 3025                      	cpi		sevsegDigit, 0x05
-00006e f0b9                      	breq	go_five
-00006f 3024                      	cpi		sevsegDigit, 0x04
-000070 f0c1                      	breq	go_four
-000071 3023                      	cpi		sevsegDigit, 0x03
-000072 f0c9                      	breq	go_three
-000073 3022                      	cpi		sevsegDigit, 0x02
-000074 f0d1                      	breq	go_two
-000075 3021                      	cpi		sevsegDigit, 0x01
-000076 f0d9                      	breq	go_one
-000077 3020                      	cpi		sevsegDigit, 0x00
-000078 f0e1                      	breq	go_zero
-000079 9508                      	ret
+00004b e011                      	ldi		temp, (1<<0)
+00004c bb1b                      	out		PORTA, temp
+00004d 3029                      	cpi		sevsegDigit, 0x09
+00004e f099                      	breq	go_nine
+00004f 3028                      	cpi		sevsegDigit, 0x08
+000050 f0a9                      	breq	go_eight
+000051 3027                      	cpi		sevsegDigit, 0x07
+000052 f0b9                      	breq	go_seven
+000053 3026                      	cpi		sevsegDigit, 0x06
+000054 f0c9                      	breq	go_six
+000055 3025                      	cpi		sevsegDigit, 0x05
+000056 f0d9                      	breq	go_five
+000057 3024                      	cpi		sevsegDigit, 0x04
+000058 f0e9                      	breq	go_four
+000059 3023                      	cpi		sevsegDigit, 0x03
+00005a f0f9                      	breq	go_three
+00005b 3022                      	cpi		sevsegDigit, 0x02
+00005c f109                      	breq	go_two
+00005d 3021                      	cpi		sevsegDigit, 0x01
+00005e f119                      	breq	go_one
+00005f 3020                      	cpi		sevsegDigit, 0x00
+000060 f129                      	breq	go_zero
+000061 9508                      	ret
                                  
                                  go_nine:
-00007a e65f                      	ldi		temp3, num9
-00007b bb55                      	out		PORTC, temp3
-00007c 9508                      	ret
+000062 2733                      	clr		levelCounter
+000063 e65f                      	ldi		temp3, num9
+000064 bb55                      	out		PORTC, temp3
+000065 9508                      	ret
                                  go_eight:
-00007d e75f                      	ldi		temp3, num8
-00007e bb55                      	out		PORTC, temp3
-00007f 9508                      	ret
+000066 2733                      	clr		levelCounter
+000067 e75f                      	ldi		temp3, num8
+000068 bb55                      	out		PORTC, temp3
+000069 9508                      	ret
                                  go_seven:
-000080 e057                      	ldi		temp3, num7
-000081 bb55                      	out		PORTC, temp3
-000082 9508                      	ret
+00006a 2733                      	clr		levelCounter
+00006b e057                      	ldi		temp3, num7
+00006c bb55                      	out		PORTC, temp3
+00006d 9508                      	ret
                                  go_six:
-000083 e75d                      	ldi		temp3, num6
+00006e 2733                      	clr		levelCounter
+00006f e75d                      	ldi		temp3, num6
+000070 bb55                      	out		PORTC, temp3
+000071 9508                      	ret
+                                 go_five:
+000072 2733                      	clr		levelCounter
+000073 e65d                      	ldi		temp3, num5
+000074 bb55                      	out		PORTC, temp3
+000075 9508                      	ret
+                                 go_four:
+000076 2733                      	clr		levelCounter
+000077 e656                      	ldi		temp3, num4
+000078 bb55                      	out		PORTC, temp3
+000079 9508                      	ret
+                                 go_three:
+00007a 2733                      	clr		levelCounter
+00007b e45f                      	ldi		temp3, num3
+00007c bb55                      	out		PORTC, temp3
+00007d 9508                      	ret
+                                 go_two:
+00007e 2733                      	clr		levelCounter
+00007f e55b                      	ldi		temp3, num2
+000080 bb55                      	out		PORTC, temp3
+000081 9508                      	ret
+                                 go_one:
+000082 2733                      	clr		levelCounter
+000083 e056                      	ldi		temp3, num1
 000084 bb55                      	out		PORTC, temp3
 000085 9508                      	ret
-                                 go_five:
-000086 e65d                      	ldi		temp3, num5
-000087 bb55                      	out		PORTC, temp3
-000088 9508                      	ret
-                                 go_four:
-000089 e656                      	ldi		temp3, num4
-00008a bb55                      	out		PORTC, temp3
-00008b 9508                      	ret
-                                 go_three:
-00008c e45f                      	ldi		temp3, num3
-00008d bb55                      	out		PORTC, temp3
-00008e 9508                      	ret
-                                 go_two:
-00008f e55b                      	ldi		temp3, num2
-000090 bb55                      	out		PORTC, temp3
-000091 9508                      	ret
-                                 go_one:
-000092 e056                      	ldi		temp3, num1
-000093 bb55                      	out		PORTC, temp3
-000094 9508                      	ret
                                  go_zero:
-000095 e35f                      	ldi		temp3, num0
-000096 bb55                      	out		PORTC, temp3
-000097 9508                      	ret
+000086 2733                      	clr		levelCounter
+000087 e35f                      	ldi		temp3, num0
+000088 bb55                      	out		PORTC, temp3
+000089 9508                      	ret
                                  
                                  tenDigit:
-000098 e012                      	ldi		temp, (1<<1)
-000099 bb1b                      	out		PORTA, temp
-00009a 3030                      	cpi		levelCounter, 0x00
-00009b f3c9                      	breq	go_zero
-00009c 3031                      	cpi		levelCounter, 0x01
-00009d f3a1                      	breq	go_one
-00009e 3032                      	cpi		levelCounter, 0x02
-00009f f379                      	breq	go_two
-0000a0 3033                      	cpi		levelCounter, 0x03
-0000a1 f351                      	breq	go_three
-0000a2 3034                      	cpi		levelCounter, 0x04
-0000a3 f329                      	breq	go_four
-0000a4 3035                      	cpi		levelCounter, 0x05
-0000a5 f301                      	breq	go_five
-0000a6 3036                      	cpi		levelCounter, 0x06
-0000a7 f2d9                      	breq	go_six
-0000a8 3037                      	cpi		levelCounter, 0x07
-0000a9 f2b1                      	breq	go_seven
-0000aa 3038                      	cpi		levelCounter, 0x08
-0000ab f289                      	breq	go_eight
-0000ac 3039                      	cpi		levelCounter, 0x09
-0000ad f261                      	breq	go_nine
-0000ae 9508                      	ret
-                                 
-                                 hunderedDigit:
-0000af e014                      	ldi		temp, (1<<2)
-0000b0 bb1b                      	out		PORTA, temp
-0000b1 3070                      	cpi		hunderedNum, 0x00
-0000b2 f311                      	breq	go_zero
-0000b3 3071                      	cpi		hunderedNum, 0x01
-0000b4 f2e9                      	breq	go_one
-0000b5 9508                      	ret
+00008a e012                      	ldi		temp, (1<<1)
+00008b bb1b                      	out		PORTA, temp
+00008c 3030                      	cpi		levelCounter, 0x00
+00008d f3c1                      	breq	go_zero
+00008e 3031                      	cpi		levelCounter, 0x01
+00008f f391                      	breq	go_one
+000090 3032                      	cpi		levelCounter, 0x02
+000091 f361                      	breq	go_two
+000092 3033                      	cpi		levelCounter, 0x03
+000093 f331                      	breq	go_three
+000094 3034                      	cpi		levelCounter, 0x04
+000095 f301                      	breq	go_four
+000096 3035                      	cpi		levelCounter, 0x05
+000097 f2d1                      	breq	go_five
+000098 3036                      	cpi		levelCounter, 0x06
+000099 f2a1                      	breq	go_six
+00009a 9508                      	ret
                                  
                                  convert_init:
-0000b6 e00b                      	ldi     result,(1<<ACIE)|(1<<ACIS1)|(1<<ACIS0)  ;Initiate comparator
-0000b7 b908                      	out     ACSR,result 				; enable comparator interrupt
-0000b8 e001                      	ldi     result,(1<<TOIE0)      			;Enable timer interrupt
-0000b9 bf09                      	out     TIMSK,result
-0000ba 9ab9                      	sbi     DDRB,PB1       			;Set converter charge/discharge pin
-0000bb 98bb                      	cbi     DDRB,PB3				;AIN1	;Voltage input to the comparator
-0000bc 9508                      	ret							
-                                 		;Return from subroutine
+00009b e00b                      	ldi     result,(1<<ACIE)|(1<<ACIS1)|(1<<ACIS0)  ;Initiate comparator
+00009c b908                      	out     ACSR,result 				; enable comparator interrupt
+00009d e001                      	ldi     result,(1<<TOIE0)      			;Enable timer interrupt
+00009e bf09                      	out     TIMSK,result
+00009f 9ab9                      	sbi     DDRB,PB1       			;Set converter charge/discharge pin
+0000a0 98bb                      	cbi     DDRB,PB3				;AIN1	;Voltage input to the comparator
+0000a1 9508                      	ret							
                                  
                                  AD_convert:
-0000bd e802                      	ldi		result,preset		  	;Load offset value (192)
-0000be bf02                      	out		TCNT0,result    		;to the counter
-0000bf 94e8                      	clt								;Clear conversion complete flag (t)
-0000c0 98ba                      	cbi		DDRB, PB2				;AIN0	;Disconnect discharging, input to comp.
-0000c1 e002                      	ldi		result,(1<<CS01)		;Start timer0 with prescaling f/8
-0000c2 bf03                      	out		TCCR0,result
+0000a2 ec01                      	ldi		result,preset		  	;Load offset value (192)
+0000a3 bf02                      	out		TCNT0,result    		;to the counter
+0000a4 94e8                      	clt								;Clear conversion complete flag (t)
+0000a5 98ba                      	cbi		DDRB, PB2				;AIN0	;Disconnect discharging, input to comp.
+0000a6 e002                      	ldi		result,(1<<CS01)		;Start timer0 with prescaling f/8
+0000a7 bf03                      	out		TCCR0,result
                                  
-0000c3 9ac1                      	sbi		PORTB,PB1				;Start charging of capacitor
-0000c4 9508                      	ret								;Return from subroutine
+0000a8 9ac1                      	sbi		PORTB,PB1				;Start charging of capacitor
+0000a9 9508                      	ret								;Return from subroutine
                                  
                                  ;Interrupt handler for A/D Comparator and overflow
                                  ANA_COMP:       	
-0000c5 b702                      	in		result,TCNT0    	; Get timer value
-0000c6 2711                      	clr		temp    			; Stop timer0
-0000c7 bf13                      	out		TCCR0,temp         
-0000c8 5803                      	subi	result,preset+1 	; Rescale A/D output 
+0000aa b702                      	in		result,TCNT0    	; Get timer value
+0000ab 2711                      	clr		temp    			; Stop timer0
+0000ac bf13                      	out		TCCR0,temp         
+0000ad 5c02                      	subi	result,preset+1 	; Rescale A/D output 
                                  								;(+1 for int. delay)
                                  
-0000c9 98c1                      	cbi		PORTB,PB1       	;Start discharge
-0000ca 9aba                      	sbi		DDRB, PB2			;AIN0	;Make discharging pin an output
+0000ae 98c1                      	cbi		PORTB,PB1       	;Start discharge
+0000af 9aba                      	sbi		DDRB, PB2			;AIN0	;Make discharging pin an output
                                  								;it automatically becomes low
-0000cb 9468                      	set							;Set conversion complete flag (T flag)
-0000cc 9518                      	reti             			;Return from interrupt
-                                 
-                                 
-                                 
-                                 expLookup:
-C:\Users\Emiran Win\Desktop\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm(260): warning: .cseg .db misalignment - padding zero byte
-0000cd 0000                      .db 0
-0000ce 0601                      .db 1, 6
-0000cf 100b                      .db 11, 16
-0000d0 1814                      .db 20, 24
-0000d1 201c                      .db 28, 32
-0000d2 2724                      .db 36, 39
-0000d3 2e2b                      .db 43, 46
-0000d4 3431                      .db 49, 52
-0000d5 3a37                      .db 55, 58
-0000d6 3f3d                      .db 61, 63
-0000d7 4442                      .db 66, 68
-0000d8 4947                      .db 71, 73
-0000d9 4d4b                      .db 75, 77
-0000da 514f                      .db 79, 81
-0000db 5553                      .db 83, 85
-0000dc 5856                      .db 86, 88
-0000dd 5b59                      .db 89, 91
-0000de 5e5c                      .db 92, 94
-0000df 605f                      .db 95, 96
-0000e0 6362                      .db 98, 99
-0000e1 6564                      .db 100, 101
-0000e2 6766                      .db 102, 103
-0000e3 6968                      .db 104, 105
-0000e4 6b6a                      .db 106, 107
-0000e5 6c6c                      .db 108, 108
-0000e6 6e6d                      .db 109, 110
-0000e7 6f6f                      .db 111, 111
-0000e8 7170                      .db 112, 113
-0000e9 7271                      .db 113, 114
-0000ea 7372                      .db 114, 115
-0000eb 7473                      .db 115, 116
-0000ec 7574                      .db 116, 117
-0000ed 7675                      .db 117, 118
-0000ee 7776                      .db 118, 119
-0000ef 7777                      .db 119, 119
-0000f0 7878                      .db 120, 120
-0000f1 7978                      .db 120, 121
-0000f2 7979                      .db 121, 121
-0000f3 7a7a                      .db 122, 122
-0000f4 7a7a                      .db 122, 122
-0000f5 7b7b                      .db 123, 123
-0000f6 7b7b                      .db 123, 123
-0000f7 7c7b                      .db 123, 124
-0000f8 7c7c                      .db 124, 124
-0000f9 7c7c                      .db 124, 124
-0000fa 7d7c                      .db 124, 125
-0000fb 7d7d                      .db 125, 125
-0000fc 7d7d                      .db 125, 125
-0000fd 7d7d                      .db 125, 125
-0000fe 7e7e                      .db 126, 126
-0000ff 7e7e                      .db 126, 126
-000100 7e7e                      .db 126, 126
-000101 7e7e                      .db 126, 126
-000102 7e7e                      .db 126, 126
-000103 7f7f                      .db 127, 127
-000104 7f7f                      .db 127, 127
-000105 7f7f                      .db 127, 127
-000106 7f7f                      .db 127, 127
-000107 7f7f                      .db 127, 127
-000108 7f7f                      .db 127, 127
-000109 7f7f                      .db 127, 127
-00010a 7f7f                      .db 127, 127
-00010b 7f7f                      .db 127, 127
-00010c 7f7f                      .db 127, 127
-00010d 7f7f                      .db 127, 127
+0000b0 9468                      	set							;Set conversion complete flag (T flag)
 
 
 RESOURCE USE INFORMATION
@@ -1161,40 +1057,40 @@ counted separately from r26..r31 here.
 .dseg memory usage only counts static data declared with .byte
 
 "ATmega32" register use summary:
-x  :   0 y  :   0 z  :   1 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
+x  :   0 y  :   0 z  :   0 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16:  17 r17:  12 r18:  19 r19:  12 r20:   2 
-r21:  24 r22:   2 r23:   4 r24:   0 r25:   0 r26:   2 r27:   2 r28:   0 
-r29:   0 r30:   2 r31:   2 
-Registers used: 13 out of 35 (37.1%)
+r13:   0 r14:   0 r15:   0 r16:  13 r17:  10 r18:  14 r19:  18 r20:   2 
+r21:  24 r22:   2 r23:   0 r24:   0 r25:   0 r26:   0 r27:   0 r28:   0 
+r29:   0 r30:   0 r31:   0 
+Registers used: 7 out of 35 (20.0%)
 
 "ATmega32" instruction use summary:
-.lds  :   0 .sts  :   0 adc   :   1 add   :   1 adiw  :   0 and   :   0 
+.lds  :   0 .sts  :   0 adc   :   0 add   :   0 adiw  :   0 and   :   0 
 andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
-brcc  :   1 brcs  :   0 break :   0 breq  :  22 brge  :   0 brhc  :   0 
-brhs  :   0 brid  :   0 brie  :   0 brlo  :   1 brlt  :   0 brmi  :   0 
-brne  :   2 brpl  :   0 brsh  :   3 brtc  :   1 brts  :   0 brvc  :   0 
+brcc  :   1 brcs  :   0 break :   0 breq  :  17 brge  :   0 brhc  :   0 
+brhs  :   0 brid  :   0 brie  :   0 brlo  :   0 brlt  :   0 brmi  :   0 
+brne  :   2 brpl  :   0 brsh  :   2 brtc  :   1 brts  :   0 brvc  :   0 
 brvs  :   0 bset  :   0 bst   :   0 call  :   0 cbi   :   3 cbr   :   0 
-clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :   5 cls   :   0 
+clc   :   0 clh   :   0 cli   :   0 cln   :   0 clr   :  12 cls   :   0 
 clt   :   1 clv   :   0 clz   :   0 com   :   0 cp    :   0 cpc   :   0 
-cpi   :  26 cpse  :   0 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0 
-fmulsu:   0 icall :   0 ijmp  :   0 in    :   1 inc   :   4 jmp   :   3 
-ld    :   0 ldd   :   0 ldi   :  25 lds   :   0 lpm   :   2 lsl   :   0 
+cpi   :  19 cpse  :   0 dec   :   0 eor   :   0 fmul  :   0 fmuls :   0 
+fmulsu:   0 icall :   0 ijmp  :   0 in    :   1 inc   :   3 jmp   :   3 
+ld    :   0 ldd   :   0 ldi   :  22 lds   :   0 lpm   :   0 lsl   :   0 
 lsr   :   0 mov   :   1 movw  :   0 mul   :   0 muls  :   0 mulsu :   0 
-neg   :   0 nop   :   0 or    :   0 ori   :   0 out   :  21 pop   :   3 
-push  :   3 rcall :  10 ret   :  19 reti  :   1 rjmp  :   1 rol   :   0 
+neg   :   0 nop   :   0 or    :   0 ori   :   0 out   :  20 pop   :   0 
+push  :   0 rcall :   7 ret   :  17 reti  :   1 rjmp  :   1 rol   :   0 
 ror   :   0 sbc   :   0 sbci  :   1 sbi   :   3 sbic  :   0 sbis  :   0 
 sbiw  :   0 sbr   :   0 sbrc  :   0 sbrs  :   0 sec   :   0 seh   :   0 
 sei   :   1 sen   :   0 ser   :   0 ses   :   0 set   :   1 sev   :   0 
 sez   :   0 sleep :   0 spm   :   0 st    :   0 std   :   0 sts   :   0 
-sub   :   0 subi  :   4 swap  :   0 tst   :   0 wdr   :   0 
-Instructions used: 30 out of 113 (26.5%)
+sub   :   0 subi  :   3 swap  :   0 tst   :   0 wdr   :   0 
+Instructions used: 24 out of 113 (21.2%)
 
 "ATmega32" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x00021c    346    130    476   32768   1.5%
+[.cseg] 0x000000 0x000164    292      0    292   32768   0.9%
 [.dseg] 0x000060 0x000060      0      0      0    2048   0.0%
 [.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
 
-Assembly complete, 0 errors, 1 warnings
+Assembly complete, 0 errors, 0 warnings
