@@ -5,7 +5,7 @@
  */ 
 
 ;***** Constants
-.equ	preset=66			;T/C0 Preset constant (256-64)
+.equ	preset=193			;T/C0 Preset constant (256-64)
 .equ num9= 0x6F
 .equ num8= 0x7F
 .equ num7= 0x07
@@ -24,7 +24,6 @@
 .def	temp2=r20
 .def	temp3=r21
 .def	temp4 = r22
-.def	hunderedNum = r23
 
 ;***********************************************************;
 ;*  	PROGRAM START - EXECUTION STARTS HERE			   *;	
@@ -60,8 +59,6 @@ Wait:
 	brtc	Wait			;Wait until conversion is complete (T flag set)
 	mov		sevsegDigit, result
 	rcall	seperateDigits
-	rcall	hunderedDigit
-	rcall	Delay2
 	rcall	tenDigit
 	rcall	Delay2
 	rcall	digitSelect		;Write result on port C
@@ -76,15 +73,8 @@ Wait1:	subi temp3, 1
 	ret
 
 seperateDigits:
-	cpi		sevsegDigit, 0x64
-	brsh	countHundereds
 	cpi		sevsegDigit, 0x0A
 	brsh	countTens
-	ret
-
-countHundereds:
-	subi	sevsegDigit, 0x64
-	inc		hunderedNum
 	ret
 
 countTens:
@@ -121,60 +111,50 @@ digitSelect:
 
 go_nine:
 	clr		levelCounter
-	clr		hunderedNum
 	ldi		temp3, num9
 	out		PORTC, temp3
 	ret
 go_eight:
-	clr		hunderedNum
 	clr		levelCounter
 	ldi		temp3, num8
 	out		PORTC, temp3
 	ret
 go_seven:
-	clr		hunderedNum
 	clr		levelCounter
 	ldi		temp3, num7
 	out		PORTC, temp3
 	ret
 go_six:
-	clr		hunderedNum
 	clr		levelCounter
 	ldi		temp3, num6
 	out		PORTC, temp3
 	ret
 go_five:
-	clr		hunderedNum
 	clr		levelCounter
 	ldi		temp3, num5
 	out		PORTC, temp3
 	ret
 go_four:
-	clr		hunderedNum
 	clr		levelCounter
 	ldi		temp3, num4
 	out		PORTC, temp3
 	ret
 go_three:
-	clr		hunderedNum
 	clr		levelCounter
 	ldi		temp3, num3
 	out		PORTC, temp3
 	ret
 go_two:
-	clr		hunderedNum
 	clr		levelCounter
 	ldi		temp3, num2
 	out		PORTC, temp3
 	ret
 go_one:
-	clr		hunderedNum
 	clr		levelCounter
 	ldi		temp3, num1
 	out		PORTC, temp3
 	ret
 go_zero:
-	clr		hunderedNum
 	clr		levelCounter
 	ldi		temp3, num0
 	out		PORTC, temp3
@@ -203,15 +183,6 @@ tenDigit:
 	breq	go_six
 	ret
 
-hunderedDigit:
-	ldi		temp, (1<<2)
-	out		PORTA, temp
-	cpi		hunderedNum, 0x00
-	breq	go_zero
-	cpi		hunderedNum, 0x01
-	breq	go_one
-	ret
-
 convert_init:
 	ldi     result,(1<<ACIE)|(1<<ACIS1)|(1<<ACIS0)  ;Initiate comparator
 	out     ACSR,result 				; enable comparator interrupt
@@ -220,7 +191,6 @@ convert_init:
 	sbi     DDRB,PB1       			;Set converter charge/discharge pin
 	cbi     DDRB,PB3				;AIN1	;Voltage input to the comparator
 	ret							
-		;Return from subroutine
 
 AD_convert:
 	ldi		result,preset		  	;Load offset value (192)
@@ -246,5 +216,3 @@ ANA_COMP:
 								;it automatically becomes low
 	set							;Set conversion complete flag (T flag)
 	reti             			;Return from interrupt
-
-
