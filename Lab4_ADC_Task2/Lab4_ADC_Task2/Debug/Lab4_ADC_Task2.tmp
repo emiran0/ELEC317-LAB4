@@ -1,0 +1,54 @@
+<ASSEMBLER_INFO>
+ <VERSION>2.2.8</VERSION>
+ <DEVICE>"ATmega32"</DEVICE>
+ <WORKING_DIR>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\Debug</WORKING_DIR>
+ <INCLUDE_PATH>
+  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
+  <DIR></DIR>
+ </INCLUDE_PATH>
+ <SOURCE_FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm</SOURCE_FILE>
+ <INCLUDED_FILES>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m32def.inc</FILE>
+ </INCLUDED_FILES>
+ <OBJECT_FILES>
+  <FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\Debug\Lab4_ADC_Task2.obj</FILE>
+ </OBJECT_FILES>
+ <HEX_FILES>
+  <FILE>Lab4_ADC_Task2.hex</FILE>
+ </HEX_FILES>
+ <OUTPUT_FILES>
+  <FILE>Lab4_ADC_Task2.map</FILE>
+  <FILE>Lab4_ADC_Task2.lss</FILE>
+ </OUTPUT_FILES>
+ <LABELS>
+  <RESET><FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm</FILE><LINE>40</LINE></RESET>
+  <ANA_COMP><FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm</FILE><LINE>254</LINE></ANA_COMP>
+  <convert_init><FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm</FILE><LINE>232</LINE></convert_init>
+  <Delay><FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm</FILE><LINE>49</LINE></Delay>
+  <loop1><FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm</FILE><LINE>52</LINE></loop1>
+  <AD_convert><FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm</FILE><LINE>242</LINE></AD_convert>
+  <Wait><FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm</FILE><LINE>59</LINE></Wait>
+  <getExp><FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm</FILE><LINE>72</LINE></getExp>
+  <seperateDigits><FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm</FILE><LINE>95</LINE></seperateDigits>
+  <hunderedDigit><FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm</FILE><LINE>223</LINE></hunderedDigit>
+  <Delay2><FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm</FILE><LINE>88</LINE></Delay2>
+  <tenDigit><FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm</FILE><LINE>204</LINE></tenDigit>
+  <digitSelect><FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm</FILE><LINE>114</LINE></digitSelect>
+  <expLookup><FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm</FILE><LINE>269</LINE></expLookup>
+  <Wait1><FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm</FILE><LINE>90</LINE></Wait1>
+  <countHundereds><FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm</FILE><LINE>102</LINE></countHundereds>
+  <countTens><FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm</FILE><LINE>107</LINE></countTens>
+  <go_nine><FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm</FILE><LINE>139</LINE></go_nine>
+  <go_eight><FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm</FILE><LINE>145</LINE></go_eight>
+  <go_seven><FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm</FILE><LINE>151</LINE></go_seven>
+  <go_six><FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm</FILE><LINE>157</LINE></go_six>
+  <go_five><FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm</FILE><LINE>163</LINE></go_five>
+  <go_four><FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm</FILE><LINE>169</LINE></go_four>
+  <go_three><FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm</FILE><LINE>175</LINE></go_three>
+  <go_two><FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm</FILE><LINE>181</LINE></go_two>
+  <go_one><FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm</FILE><LINE>187</LINE></go_one>
+  <go_zero><FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm</FILE><LINE>193</LINE></go_zero>
+  <goALL><FILE>C:\Users\emiran\Documents\Atmel Studio\7.0\ELEC317-LAB4\Lab4_ADC_Task2\Lab4_ADC_Task2\main.asm</FILE><LINE>199</LINE></goALL>
+ </LABELS>
+</ASSEMBLER_INFO>
