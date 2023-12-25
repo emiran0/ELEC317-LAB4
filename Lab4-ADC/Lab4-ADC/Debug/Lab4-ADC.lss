@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm Mon Dec 25 11:47:47 2023
+AVRASM ver. 2.2.8  c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm Mon Dec 25 11:50:48 2023
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m32def.inc'
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.7.374\avrasm\inc\m32def.inc'
@@ -844,6 +844,7 @@ AVRASM ver. 2.2.8  c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\
                                  .def	levelCounter = r19
                                  .def	temp2=r20
                                  .def	temp3=r21
+                                 .def	temp4 = r22
                                  
                                  ;***********************************************************;
                                  ;*  	PROGRAM START - EXECUTION STARTS HERE			   *;	
@@ -885,11 +886,11 @@ AVRASM ver. 2.2.8  c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\
 00003b d001                      	rcall	Delay2
 00003c cff1                      	rjmp	Delay			;Repeat conversion
                                  
-00003d e050                      Delay2:	ldi temp3, $00
-00003e e033                      	ldi levelCounter, $03
-00003f 5051                      Wait1:	subi temp3, 1
-000040 4030                      	sbci levelCounter, 0
-000041 f798                      	brcc Wait
+00003d e010                      Delay2:	ldi temp, $00
+00003e e063                      	ldi temp4, $03
+00003f 5011                      Wait1:	subi temp, 1
+000040 4060                      	sbci temp4, 0
+000041 f7e8                      	brcc Wait1
 000042 9508                      	ret
                                  
                                  seperateDigits:
@@ -1054,10 +1055,10 @@ counted separately from r26..r31 here.
 "ATmega32" register use summary:
 x  :   0 y  :   0 z  :   0 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16:  13 r17:  10 r18:  14 r19:  19 r20:   2 
-r21:  26 r22:   0 r23:   0 r24:   0 r25:   0 r26:   0 r27:   0 r28:   0 
+r13:   0 r14:   0 r15:   0 r16:  13 r17:  12 r18:  14 r19:  17 r20:   2 
+r21:  24 r22:   2 r23:   0 r24:   0 r25:   0 r26:   0 r27:   0 r28:   0 
 r29:   0 r30:   0 r31:   0 
-Registers used: 6 out of 35 (17.1%)
+Registers used: 7 out of 35 (20.0%)
 
 "ATmega32" instruction use summary:
 .lds  :   0 .sts  :   0 adc   :   0 add   :   0 adiw  :   0 and   :   0 

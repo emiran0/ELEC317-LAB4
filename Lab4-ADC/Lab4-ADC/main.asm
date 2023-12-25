@@ -23,6 +23,7 @@
 .def	levelCounter = r19
 .def	temp2=r20
 .def	temp3=r21
+.def	temp4 = r22
 
 ;***********************************************************;
 ;*  	PROGRAM START - EXECUTION STARTS HERE			   *;	
@@ -64,11 +65,11 @@ Wait:
 	rcall	Delay2
 	rjmp	Delay			;Repeat conversion
 
-Delay2:	ldi temp3, $00
-	ldi levelCounter, $03
-Wait1:	subi temp3, 1
-	sbci levelCounter, 0
-	brcc Wait
+Delay2:	ldi temp, $00
+	ldi temp4, $03
+Wait1:	subi temp, 1
+	sbci temp4, 0
+	brcc Wait1
 	ret
 
 seperateDigits:
