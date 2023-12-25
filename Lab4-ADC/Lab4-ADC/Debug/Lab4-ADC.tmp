@@ -23,11 +23,11 @@
  </OUTPUT_FILES>
  <LABELS>
   <RESET><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>39</LINE></RESET>
-  <ANA_COMP><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>204</LINE></ANA_COMP>
-  <convert_init><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>183</LINE></convert_init>
+  <ANA_COMP><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>205</LINE></ANA_COMP>
+  <convert_init><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>184</LINE></convert_init>
   <Delay><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>48</LINE></Delay>
   <loop1><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>51</LINE></loop1>
-  <AD_convert><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>192</LINE></AD_convert>
+  <AD_convert><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>193</LINE></AD_convert>
   <Wait><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>58</LINE></Wait>
   <seperateDigits><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>75</LINE></seperateDigits>
   <tenDigit><FILE>c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm</FILE><LINE>167</LINE></tenDigit>

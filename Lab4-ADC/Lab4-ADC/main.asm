@@ -65,9 +65,9 @@ Wait:
 	rcall	Delay2
 	rjmp	Delay			;Repeat conversion
 
-Delay2:	ldi temp, $00
+Delay2:	ldi temp3, $00
 	ldi temp4, $03
-Wait1:	subi temp, 1
+Wait1:	subi temp3, 1
 	sbci temp4, 0
 	brcc Wait1
 	ret
@@ -179,6 +179,7 @@ tenDigit:
 	breq	go_four
 	cpi		levelCounter, 0x05
 	breq	go_five
+	ret
 
 convert_init:
 	ldi     result,(1<<ACIE)|(1<<ACIS1)|(1<<ACIS0)  ;Initiate comparator

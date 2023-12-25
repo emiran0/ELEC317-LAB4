@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.8  c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm Mon Dec 25 11:50:48 2023
+AVRASM ver. 2.2.8  c:\users\emiran\Documents\Atmel Studio\7.0\Lab4-ADC\Lab4-ADC\main.asm Mon Dec 25 11:53:47 2023
 
 
 EQU  SIGNATURE_000 0000001e
@@ -587,11 +587,11 @@ DEF  temp2        r20
 DEF  temp3        r21
 DEF  temp4        r22
 CSEG RESET        00000026
-CSEG ANA_COMP     000000aa
-CSEG convert_init 0000009b
+CSEG ANA_COMP     000000ab
+CSEG convert_init 0000009c
 CSEG Delay        0000002e
 CSEG loop1        00000030
-CSEG AD_convert   000000a2
+CSEG AD_convert   000000a3
 CSEG Wait         00000035
 CSEG seperateDigits 00000043
 CSEG tenDigit     0000008d
