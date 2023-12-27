@@ -1,19 +1,15 @@
 /*
  * Lab4_ADC.asm
- *
- ******  TASK 1 ********	
- *
- *	292 Byte
- *	7 Register used.
- *	CLK ==> 4MHz. To stop sudden jumps in seven segment display.
- *	There are minor changes like new Delay subroutine and driving
- *	the seven segment display. Other than that the code is almost the same as
- *	the given sample code.
- *  
+ *	;;;;TASK 2;;;;;;
+ *	CLK ==> 4MHz, to stop sudden jumps.
+ *	476 Byte
+ *  8 registers
+ *	each index of the data table is for the time index from T0
+ *	which equals to the result (potentiometer).
  */ 
 
 ;***** Constants
-.equ	preset=193			;T/C0 Preset constant (256-64)
+.equ	preset=130			;T/C0 Preset constant (256-64)
 .equ num9= 0x6F
 .equ num8= 0x7F
 .equ num7= 0x07
@@ -32,6 +28,7 @@
 .def	temp2=r20
 .def	temp3=r21
 .def	temp4 = r22
+.def	hunderedNum = r23
 
 ;***********************************************************;
 ;*  	PROGRAM START - EXECUTION STARTS HERE			   *;	
@@ -51,7 +48,7 @@ RESET:
 	out 	SPH, TEMP
 	rcall	convert_init		;Initialize A/D converter
 	ldi		result,$ff			;set port D as output
-	out		DDRC,result			;for LED�s
+	out		DDRC,result			;for LED?s
 	sei							;Enable global interrupt
 Delay:	
 	clr		temp2			;Clear temp counter 1
@@ -66,12 +63,33 @@ loop1:
 Wait:
 	brtc	Wait			;Wait until conversion is complete (T flag set)
 	mov		sevsegDigit, result
+	rcall	getExp
 	rcall	seperateDigits
+	rcall	hunderedDigit
+	rcall	Delay2
 	rcall	tenDigit
 	rcall	Delay2
 	rcall	digitSelect		;Write result on port C
 	rcall	Delay2
+	clr		levelCounter
+	clr		hunderedNum
 	rjmp	Delay			;Repeat conversion
+
+getExp:
+	push	XL
+	push	XH
+	push	result
+
+	ldi		ZL, low(expLookup * 2)
+	ldi		ZH, high(expLookup * 2)
+	add		ZL, sevsegDigit
+	clr		result
+	adc		ZH, result
+	lpm		sevsegDigit, Z
+
+	pop		result
+	pop		XH
+	pop		XL
 
 Delay2:	ldi temp3, $00
 	ldi temp4, $03
@@ -81,8 +99,17 @@ Wait1:	subi temp3, 1
 	ret
 
 seperateDigits:
+	cpi		sevsegDigit, 0x64
+	brsh	countHundereds
 	cpi		sevsegDigit, 0x0A
 	brsh	countTens
+	ret
+
+countHundereds:
+	subi	sevsegDigit, 0x64
+	inc		hunderedNum
+	cpi		sevsegDigit, 0x64
+	brlo	seperateDigits
 	ret
 
 countTens:
@@ -118,52 +145,42 @@ digitSelect:
 	ret
 
 go_nine:
-	clr		levelCounter
 	ldi		temp3, num9
 	out		PORTC, temp3
 	ret
 go_eight:
-	clr		levelCounter
 	ldi		temp3, num8
 	out		PORTC, temp3
 	ret
 go_seven:
-	clr		levelCounter
 	ldi		temp3, num7
 	out		PORTC, temp3
 	ret
 go_six:
-	clr		levelCounter
 	ldi		temp3, num6
 	out		PORTC, temp3
 	ret
 go_five:
-	clr		levelCounter
 	ldi		temp3, num5
 	out		PORTC, temp3
 	ret
 go_four:
-	clr		levelCounter
 	ldi		temp3, num4
 	out		PORTC, temp3
 	ret
 go_three:
-	clr		levelCounter
 	ldi		temp3, num3
 	out		PORTC, temp3
 	ret
 go_two:
-	clr		levelCounter
 	ldi		temp3, num2
 	out		PORTC, temp3
 	ret
 go_one:
-	clr		levelCounter
 	ldi		temp3, num1
 	out		PORTC, temp3
 	ret
 go_zero:
-	clr		levelCounter
 	ldi		temp3, num0
 	out		PORTC, temp3
 	ret
@@ -185,6 +202,21 @@ tenDigit:
 	breq	go_five
 	cpi		levelCounter, 0x06
 	breq	go_six
+	cpi		levelCounter, 0x07
+	breq	go_seven
+	cpi		levelCounter, 0x08
+	breq	go_eight
+	cpi		levelCounter, 0x09
+	breq	go_nine
+	ret
+
+hunderedDigit:
+	ldi		temp, (1<<2)
+	out		PORTA, temp
+	cpi		hunderedNum, 0x00
+	breq	go_zero
+	cpi		hunderedNum, 0x01
+	breq	go_one
 	ret
 
 convert_init:
@@ -195,8 +227,9 @@ convert_init:
 	sbi     DDRB,PB1       			;Set converter charge/discharge pin
 	cbi     DDRB,PB3				;AIN1	;Voltage input to the comparator
 	ret							
+		;Return from subroutine
 
-AD_convert:whi
+AD_convert:
 	ldi		result,preset		  	;Load offset value (192)
 	out		TCNT0,result    		;to the counter
 	clt								;Clear conversion complete flag (t)
@@ -220,3 +253,73 @@ ANA_COMP:
 								;it automatically becomes low
 	set							;Set conversion complete flag (T flag)
 	reti             			;Return from interrupt
+
+
+
+expLookup:
+.db 0
+.db 1, 6
+.db 11, 16
+.db 20, 24
+.db 28, 32
+.db 36, 39
+.db 43, 46
+.db 49, 52
+.db 55, 58
+.db 61, 63
+.db 66, 68
+.db 71, 73
+.db 75, 77
+.db 79, 81
+.db 83, 85
+.db 86, 88
+.db 89, 91
+.db 92, 94
+.db 95, 96
+.db 98, 99
+.db 100, 101
+.db 102, 103
+.db 104, 105
+.db 106, 107
+.db 108, 108
+.db 109, 110
+.db 111, 111
+.db 112, 113
+.db 113, 114
+.db 114, 115
+.db 115, 116
+.db 116, 117
+.db 117, 118
+.db 118, 119
+.db 119, 119
+.db 120, 120
+.db 120, 121
+.db 121, 121
+.db 122, 122
+.db 122, 122
+.db 123, 123
+.db 123, 123
+.db 123, 124
+.db 124, 124
+.db 124, 124
+.db 124, 125
+.db 125, 125
+.db 125, 125
+.db 125, 125
+.db 126, 126
+.db 126, 126
+.db 126, 126
+.db 126, 126
+.db 126, 126
+.db 127, 127
+.db 127, 127
+.db 127, 127
+.db 127, 127
+.db 127, 127
+.db 127, 127
+.db 127, 127
+.db 127, 127
+.db 127, 127
+.db 127, 127
+.db 127, 127
+;exponential graph goes 127 for inf. in this example

@@ -51,7 +51,7 @@ RESET:
 	out 	SPH, TEMP
 	rcall	convert_init		;Initialize A/D converter
 	ldi		result,$ff			;set port D as output
-	out		DDRC,result			;for LEDï¿½s
+	out		DDRC,result			;for LED’s
 	sei							;Enable global interrupt
 Delay:	
 	clr		temp2			;Clear temp counter 1
@@ -196,7 +196,7 @@ convert_init:
 	cbi     DDRB,PB3				;AIN1	;Voltage input to the comparator
 	ret							
 
-AD_convert:whi
+AD_convert:
 	ldi		result,preset		  	;Load offset value (192)
 	out		TCNT0,result    		;to the counter
 	clt								;Clear conversion complete flag (t)
